@@ -1,0 +1,1 @@
+# HS_ESP32_CAM_module
