@@ -1,4 +1,4 @@
-25273605178727700
+25278838857359919
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -69342,6 +69342,20 @@ SMA_JLINK_DIY
 6
 6
 Mylib
+SOD-123_MCC
+
+MBR0530-TP 
+0
+2
+2
+Mylib
+SODFL1608X70N
+
+
+0
+2
+2
+Mylib
 SOIC127P600X175-8N
 FPT-8P-M02
 Integrated Circuit
@@ -69376,6 +69390,13 @@ SOP65P780X200-16N
 0
 16
 16
+Mylib
+SOT-553   ESV_TOS-M
+
+TCR2LE13 
+0
+5
+5
 Mylib
 SOT50P160X60-6N
 
