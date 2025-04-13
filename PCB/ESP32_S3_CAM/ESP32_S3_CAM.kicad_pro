@@ -517,7 +517,7 @@
       "plot": "",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "Bottom_CONN.step",
+      "step": "ESP32_CAM.step",
       "svg": "",
       "vrml": ""
     },
