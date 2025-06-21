@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/esp32s3_cam_uart/build/CMakeFiles/bootloader
+/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/esp32s3_cam_uart/build/CMakeFiles/bootloader.rule
+/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/esp32s3_cam_uart/build/CMakeFiles/bootloader-complete.rule
+/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/esp32s3_cam_uart/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/esp32s3_cam_uart/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/esp32s3_cam_uart/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/esp32s3_cam_uart/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/esp32s3_cam_uart/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/esp32s3_cam_uart/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/esp32s3_cam_uart/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule

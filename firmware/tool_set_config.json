@@ -1,0 +1,21 @@
+[
+  {
+    "id": -285370018,
+    "idfLocation": "/Users/liufangzheng/Downloads/software/IDF_IDE/esp_idf/esp-idf-v5.4.1",
+    "idfVersion": "5.4.1",
+    "active": true,
+    "systemGitExecutablePath": "/usr/bin/git",
+    "systemPythonExecutablePath": "/usr/local/bin/python3",
+    "envVars": {
+      "PATH": "/Users/liufangzheng/.espressif/tools/xtensa-esp-elf-gdb/14.2_20240403/xtensa-esp-elf-gdb/bin:/Users/liufangzheng/.espressif/tools/riscv32-esp-elf-gdb/14.2_20240403/riscv32-esp-elf-gdb/bin:/Users/liufangzheng/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin:/Users/liufangzheng/.espressif/tools/esp-clang/esp-18.1.2_20240912/esp-clang/bin:/Users/liufangzheng/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20241119/riscv32-esp-elf/bin:/Users/liufangzheng/.espressif/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/bin:/Users/liufangzheng/.espressif/tools/cmake/3.30.2/CMake.app/Contents/bin:/Users/liufangzheng/.espressif/tools/openocd-esp32/v0.12.0-esp32-20241016/openocd-esp32/bin:/Users/liufangzheng/.espressif/tools/ninja/1.12.1/:/Users/liufangzheng/.espressif/python_env/idf5.4_py3.12_env/bin:/Users/liufangzheng/Downloads/software/IDF_IDE/esp_idf/esp-idf-v5.4.1/tools:$PATH",
+      "IDF_COMPONENT_MANAGER": "1",
+      "OPENOCD_SCRIPTS": "/Users/liufangzheng/.espressif/tools/openocd-esp32/v0.12.0-esp32-20241016/openocd-esp32/share/openocd/scripts",
+      "IDF_DEACTIVATE_FILE_PATH": "/var/folders/5x/yb1tpvsd1fs9lpzm2scrjh_80000gn/T/tmpuia9p2muidf_38882",
+      "IDF_MAINTAINER": "1",
+      "IDF_PATH": "/Users/liufangzheng/Downloads/software/IDF_IDE/esp_idf/esp-idf-v5.4.1",
+      "IDF_PYTHON_ENV_PATH": "/Users/liufangzheng/.espressif/python_env/idf5.4_py3.12_env",
+      "ESP_IDF_VERSION": "5.4.1",
+      "ESP_ROM_ELF_DIR": "/Users/liufangzheng/.espressif/tools/esp-rom-elfs/20241011/"
+    }
+  }
+]
