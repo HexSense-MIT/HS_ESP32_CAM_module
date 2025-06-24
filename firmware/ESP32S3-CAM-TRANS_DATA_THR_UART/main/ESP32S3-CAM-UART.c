@@ -183,7 +183,7 @@ void app_main(void) {
   // Initialize camera
   ret = esp_camera_init(&camera_config);
   if (ret != ESP_OK) {
-    ESP_LOGE(TAG, "Camera init failed with error 0x%x", ret);
+    printf(TAG, "Camera init failed with error 0x%x", ret);
     return;
   }
 
@@ -194,14 +194,15 @@ void app_main(void) {
       }
       else if (cmd_recv == 0x02) { // Command to send the image
         if (fb) {
+          vTaskDelay(pdMS_TO_TICKS(10)); 
           send_image_handler();
         } else {
-          ESP_LOGE(TAG, "No image captured to send");
+          printf(TAG, "No image captured to send");
           tx_data(IMAGE_TK_NCK, sizeof(IMAGE_TK_NCK)); // Send negative acknowledgment
         }
-      } else {
-        ESP_LOGW(TAG, "Unknown command received: %02X", cmd_recv);
-        tx_data(IMAGE_TK_UNKNOWN, sizeof(IMAGE_TK_UNKNOWN)); // Send unknown command response
+      }
+      else {
+        printf(TAG, "Unknown command received: %02X", cmd_recv);
       }
     }
   }

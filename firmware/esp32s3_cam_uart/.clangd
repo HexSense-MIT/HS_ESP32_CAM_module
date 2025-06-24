@@ -1,3 +1,0 @@
-CompileFlags:
-  CompilationDatabase: /Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/esp32s3_cam_uart/build
-  Remove: [-m*, -f*]
