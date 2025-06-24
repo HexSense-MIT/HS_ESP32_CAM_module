@@ -21,6 +21,8 @@ import random
 import struct
 import os.path
 from binascii import hexlify
+import threading
+import subprocess
 
 recv_data_cnt = 16
 
@@ -202,12 +204,18 @@ class MainWindow(QtWidgets.QMainWindow):
             current_time = read_current_time()
             self.log.append(current_time + " :  Image size from #" + str(cam_num) + " - " + str(self.image_size) + " bytes")
 
+    def parse_image(self, image_data):
+        with open("output_image.jpg", "wb") as image_file:
+            image_file.write(image_data)
+
     def grab_data(self):
         self.get_cam_num()
         self.cmd[2] = 0x04
         cmd_byte = bytearray(self.cmd)
         print("cmd sent: ", cmd_byte)
         self.ser.write(cmd_byte)
+
+        image_data = bytearray()
 
         i = 0
         while (not self.ser.inWaiting()):
@@ -221,13 +229,18 @@ class MainWindow(QtWidgets.QMainWindow):
         while (byte_i < self.image_size):
             if (self.ser.inWaiting()):
                 recv_data = self.ser.read(1)
-                print(recv_data.hex(), end='', flush=True)
+                # print(recv_data.hex(), end='', flush=True)
+                image_data.append(recv_data[0])
                 byte_i += 1
-                self.image_bar.setValue(byte_i)
+                print(f'\rProgress: {byte_i/self.image_size*100:.1f}%', end='', flush=True)
+                # print(byte_i, self.image_size)
+                # self.image_bar.setValue(byte_i)
 
         cam_num = self.cmd[1] + 1
         current_time = read_current_time()
         self.log.append(current_time + " :  received image from Camera #" + str(cam_num))
+        self.parse_image(image_data)
+        self.log.append(current_time + " :  write image to output_image.jpg")
 
     def read_port(self):
         if (self.ser.inWaiting()):
