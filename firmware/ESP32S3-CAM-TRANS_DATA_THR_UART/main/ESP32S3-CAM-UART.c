@@ -194,7 +194,6 @@ void app_main(void) {
       }
       else if (cmd_recv == 0x02) { // Command to send the image
         if (fb) {
-          vTaskDelay(pdMS_TO_TICKS(10)); 
           send_image_handler();
         } else {
           printf(TAG, "No image captured to send");

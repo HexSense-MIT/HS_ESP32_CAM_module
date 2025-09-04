@@ -121,14 +121,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.get_cam_num()
         self.cmd[2] = 0x01
         cmd_byte = bytearray(self.cmd)
-        print("cmd sent: ", cmd_byte)
+        # print("cmd sent: ", cmd_byte)
         self.ser.write(cmd_byte)
 
         i = 0
         while(not self.ser.inWaiting()):
             sleep(0.1)
             i = i + 1
-            if (i > 10):
+            if (i > 20):
                 print("No response from the HexSense!")
                 break
 
@@ -136,7 +136,7 @@ class MainWindow(QtWidgets.QMainWindow):
         while (self.ser.inWaiting()):
             recv_data = self.ser.read(1)
             reply.append(recv_data)
-        print("reply: ", reply)
+        # print("reply: ", reply)
 
         cam_num = int.from_bytes(reply[1], "little") + 1
 
@@ -150,14 +150,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.get_cam_num()
         self.cmd[2] = 0x02
         cmd_byte = bytearray(self.cmd)
-        print("cmd sent: ", cmd_byte)
+        # print("cmd sent: ", cmd_byte)
         self.ser.write(cmd_byte)
 
         i = 0
         while (not self.ser.inWaiting()):
             sleep(0.1)
             i = i + 1
-            if (i > 10):
+            if (i > 20):
                 print("No response from the HexSense!")
                 break
 
@@ -165,7 +165,7 @@ class MainWindow(QtWidgets.QMainWindow):
         while (self.ser.inWaiting()):
             recv_data = self.ser.read(1)
             reply.append(recv_data)
-        print("reply: ", reply)
+        # print("reply: ", reply)
 
         cam_num = int.from_bytes(reply[1], "little") + 1
 
@@ -177,14 +177,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.get_cam_num()
         self.cmd[2] = 0x03
         cmd_byte = bytearray(self.cmd)
-        print("cmd sent: ", cmd_byte)
+        # print("cmd sent: ", cmd_byte)
         self.ser.write(cmd_byte)
 
         i = 0
         while (not self.ser.inWaiting()):
             sleep(0.1)
             i = i + 1
-            if (i > 10):
+            if (i > 20):
                 print("No response from the HexSense!")
                 break
 
@@ -212,16 +212,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.get_cam_num()
         self.cmd[2] = 0x04
         cmd_byte = bytearray(self.cmd)
-        print("cmd sent: ", cmd_byte)
+        # print("cmd sent: ", cmd_byte)
         self.ser.write(cmd_byte)
 
-        image_data = bytearray()
+        image_data = bytearray() # to store the image data
 
         i = 0
         while (not self.ser.inWaiting()):
             sleep(0.1)
             i = i + 1
-            if (i > 10):
+            if (i > 20):
                 print("No response from the HexSense!")
                 break
 
