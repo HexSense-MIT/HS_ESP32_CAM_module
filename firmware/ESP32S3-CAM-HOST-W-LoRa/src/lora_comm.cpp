@@ -16,8 +16,10 @@ void lora_rst(void) {
 void lora_setup (void) {
   lora_pin_init();
   lora_rst();
+
+  SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_SS);
+
   LoRa.setPins(LORA_CS_PIN, LORA_RST, LORA_IRQ);
-  SPI.begin();
 
   while (!LoRa.begin(915E6)) {
     Serial.println(".");
