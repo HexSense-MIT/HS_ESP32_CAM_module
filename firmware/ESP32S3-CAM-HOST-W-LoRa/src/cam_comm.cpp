@@ -7,6 +7,8 @@ volatile bool recv_cmd_flag = false;
 uint8_t recv_cmd[5] = {0, 0, 0, 0, 0};
 uint8_t reply_data[9] = {0xAA, 0, 0, 0, 0, 0, 0, 0, 0};
 
+EXT_RAM_ATTR uint8_t img_buffer[IMG_SIZE] = {0};
+
 uint8_t cam_num = 0;
 uint8_t cam_data = 0;
 

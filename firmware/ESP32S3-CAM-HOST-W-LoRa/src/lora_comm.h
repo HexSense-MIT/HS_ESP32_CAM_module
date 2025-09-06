@@ -5,9 +5,9 @@
 #include "cam_system.h"
 #include "cam_comm.h"
 
-#define LORA_CS_PIN 44
-#define LORA_RST     7
-#define LORA_IRQ    10
+#define  LORA_CS_PIN 44
+#define  LORA_RST     7
+#define  LORA_IRQ    10
 
 #define  LORA_SS    44
 #define  LORA_MOSI  48
