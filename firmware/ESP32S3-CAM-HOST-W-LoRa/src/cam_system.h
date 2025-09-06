@@ -5,6 +5,7 @@
 #include <esp_heap_caps.h>
 
 #include "cam_adapter.h"
+#include "cam_comm.h"
 
 #define CAM_RX_PIN 13
 #define CAM_TX_PIN 12

@@ -35,9 +35,9 @@ void send_reply(uint8_t* data, uint64_t len) {
 int update_comm(void) {
   int i = 0;
 
-  while (rf95.available()) {
-    recv_cmd[i++] = rf95.recv((uint8_t*)&recv_cmd[i], (uint8_t*)&i) ? recv_cmd[i] : 0;
-  }
+  // while (rf95.available()) {
+  //   recv_cmd[i++] = rf95.recv((uint8_t*)&recv_cmd[i], (uint8_t*)&i) ? recv_cmd[i] : 0;
+  // }
 
   // while (Serial.available()) {
   //   recv_cmd[i++] = Serial.read();
@@ -50,7 +50,7 @@ int update_comm(void) {
   //   recv_cmd_flag = false; // Reset the flag if the command is not valid
   // }
 
-  // return i; // Return the number of bytes read
+  return i; // Return the number of bytes read
 }
 
 void handle_cmd(void) {
