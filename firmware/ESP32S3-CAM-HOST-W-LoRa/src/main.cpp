@@ -8,8 +8,6 @@ void setup() {
 }
 
 void loop() {
-  // lora_send_data((uint8_t *)"Hello", 5);
-  // delay(1000);
   if (update_comm()) {
     handle_cmd();
   }

@@ -14,7 +14,7 @@
 #define TURN_ON_CAM_CODE  0x01
 #define TURN_OFF_CAM_CODE 0x02
 
-#define IMG_SIZE 1024 * 100  // 100 KB buffer for image data
+#define IMG_SIZE 1024 * 500  // 100 KB buffer for image data
 
 extern volatile bool recv_cmd_flag;
 

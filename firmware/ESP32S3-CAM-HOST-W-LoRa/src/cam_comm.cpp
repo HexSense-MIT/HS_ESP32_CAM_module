@@ -7,7 +7,8 @@ volatile bool recv_cmd_flag = false;
 uint8_t recv_cmd[5] = {0, 0, 0, 0, 0};
 uint8_t reply_data[9] = {0xAA, 0, 0, 0, 0, 0, 0, 0, 0};
 
-EXT_RAM_ATTR uint8_t img_buffer[IMG_SIZE] = {0};
+// EXT_RAM_ATTR uint8_t img_buffer[IMG_SIZE] = {0};
+uint8_t *img_buffer = (uint8_t*) heap_caps_malloc(IMG_SIZE*(sizeof(uint8_t)), MALLOC_CAP_SPIRAM);
 
 uint8_t cam_num = 0;
 uint8_t cam_data = 0;
@@ -128,7 +129,8 @@ void handle_cmd(void) {
 
       while (recv_data_i < data_len) {
         if (Serial1.available()) {
-          Serial.write(Serial1.read());
+          img_buffer[recv_data_i] = Serial1.read();
+          // Serial.write(Serial1.read());
           recv_data_i++;
         }
       }
