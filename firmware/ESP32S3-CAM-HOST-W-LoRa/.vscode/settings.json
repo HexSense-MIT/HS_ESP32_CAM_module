@@ -10,6 +10,24 @@
         "vector": "cpp",
         "string_view": "cpp",
         "initializer_list": "cpp",
-        "cstddef": "cpp"
+        "cstddef": "cpp",
+        "atomic": "cpp",
+        "cstdio": "cpp",
+        "cstring": "cpp",
+        "cwchar": "cpp",
+        "functional": "cpp",
+        "memory": "cpp",
+        "memory_resource": "cpp",
+        "optional": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "random": "cpp",
+        "fstream": "cpp",
+        "new": "cpp",
+        "stdexcept": "cpp",
+        "system_error": "cpp",
+        "typeinfo": "cpp",
+        "utility": "cpp",
+        "algorithm": "cpp"
     }
 }

@@ -21,9 +21,12 @@ extern volatile bool recv_cmd_flag;
 extern int update_comm(void);
 extern void handle_cmd(void);
 
-void pack_ack(uint8_t ack_code);
-void pack_error(uint8_t error_code);
-void pack_data(uint8_t* data, uint64_t len);
+size_t pack_ack(uint8_t ack_code);
+size_t pack_error(uint8_t error_code);
+size_t pack_data(uint8_t* data, uint64_t len);
 
-void send_reply(uint8_t* data, uint64_t len);
-void send_photo(uint8_t* data, uint64_t len);
+void send_reply(uint8_t* data, size_t len);
+
+size_t cobs_encode(const uint8_t* input, size_t length, uint8_t* output);
+size_t cobs_decode(const uint8_t* input, size_t length, uint8_t* output);
+
