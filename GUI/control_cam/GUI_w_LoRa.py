@@ -138,7 +138,7 @@ class MainWindow(QtWidgets.QMainWindow):
         while (self.ser.inWaiting()):
             recv_data = self.ser.read(1)
             reply.append(recv_data)
-        # print("reply: ", reply)
+        print("reply: ", reply)
 
         cam_num = int.from_bytes(reply[1], "little") + 1
 
@@ -168,7 +168,7 @@ class MainWindow(QtWidgets.QMainWindow):
         while (self.ser.inWaiting()):
             recv_data = self.ser.read(1)
             reply.append(recv_data)
-        # print("reply: ", reply)
+        print("reply: ", reply)
 
         cam_num = int.from_bytes(reply[1], "little") + 1
 
