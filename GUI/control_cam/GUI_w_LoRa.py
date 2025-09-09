@@ -23,6 +23,7 @@ import os.path
 from binascii import hexlify
 import threading
 import subprocess
+from cobs import cobs
 
 recv_data_cnt = 16
 
@@ -122,7 +123,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cmd[2] = 0x01
         cmd_byte = bytearray(self.cmd)
         # print("cmd sent: ", cmd_byte)
-        self.ser.write(cmd_byte)
+        encoded_cmd = cobs.encode(cmd_byte)
+        self.ser.write(encoded_cmd)
 
         i = 0
         while(not self.ser.inWaiting()):
@@ -151,7 +153,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cmd[2] = 0x02
         cmd_byte = bytearray(self.cmd)
         # print("cmd sent: ", cmd_byte)
-        self.ser.write(cmd_byte)
+        encoded_cmd = cobs.encode(cmd_byte)
+        self.ser.write(encoded_cmd)
 
         i = 0
         while (not self.ser.inWaiting()):
@@ -178,7 +181,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cmd[2] = 0x03
         cmd_byte = bytearray(self.cmd)
         # print("cmd sent: ", cmd_byte)
-        self.ser.write(cmd_byte)
+        encoded_cmd = cobs.encode(cmd_byte)
+        self.ser.write(encoded_cmd)
 
         i = 0
         while (not self.ser.inWaiting()):
@@ -213,7 +217,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cmd[2] = 0x04
         cmd_byte = bytearray(self.cmd)
         # print("cmd sent: ", cmd_byte)
-        self.ser.write(cmd_byte)
+        encoded_cmd = cobs.encode(cmd_byte)
+        self.ser.write(encoded_cmd)
 
         image_data = bytearray() # to store the image data
 

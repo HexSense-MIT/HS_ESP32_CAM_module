@@ -14,4 +14,5 @@
 
 extern void lora_init(void);
 
-extern void lora_send_test(uint8_t *data, uint8_t len);
+extern void lora_send(uint8_t *data, uint8_t len);
+extern void serial_send(uint8_t *data, uint8_t len);

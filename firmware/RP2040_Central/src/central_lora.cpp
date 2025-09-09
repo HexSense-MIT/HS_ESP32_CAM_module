@@ -9,15 +9,17 @@ void lora_init(void) {
   SPI.begin();
   LoRa.setPins(LORA_CS_PIN, LORA_RESET_PIN, LORA_DIO0_PIN);
 
-  if (!LoRa.begin(915E6)) {
-    Serial.println("Starting LoRa failed!");
-    while (1);
+  while (!LoRa.begin(915E6)) {
+    delay(10);
   }
-  Serial.println("LoRa Initializing OK!");
 }
 
-void lora_send_test(uint8_t *data, uint8_t len) {
+void lora_send(uint8_t *data, uint8_t len) {
   LoRa.beginPacket();
   LoRa.write(data, len);
   LoRa.endPacket();
+}
+
+void serial_send(uint8_t *data, uint8_t len) {
+  Serial.write(data, len);
 }
