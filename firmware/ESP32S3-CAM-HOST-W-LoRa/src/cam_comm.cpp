@@ -64,30 +64,12 @@ int update_comm(void) {
   // try to parse packet
   int packetSize = LoRa.parsePacket();
   if (packetSize) {
-    // received a packet
-    Serial.print("Received packet '");
-
-    // read packet
+     // read packet
     while (LoRa.available()) {
       recv_cmd[recv_data_i++] = LoRa.read();
-      Serial.print(recv_cmd[recv_data_i - 1], HEX);
-      Serial.print(" ");
     }
-
-    Serial.print("' with length ");
-    Serial.println(recv_data_i);
 
     size_t decoded_len = cobs_decode(recv_cmd, recv_data_i-1, recv_cmd_decoded);
-
-    Serial.print("Decoded length: ");
-    Serial.println(decoded_len);
-    Serial.print("Data: ");
-    for (int i = 0; i < decoded_len; i++) {
-      Serial.print("0x");
-      Serial.print(recv_cmd_decoded[i], HEX);
-      Serial.print(" ");
-    }
-    Serial.println();
 
     if (recv_cmd_decoded[0] == 0xAA && decoded_len == 5) {
       recv_cmd_flag = true;

@@ -138,11 +138,15 @@ class MainWindow(QtWidgets.QMainWindow):
         while (self.ser.inWaiting()):
             recv_data = self.ser.read(1)
             reply.append(recv_data)
+
+        # decode the reply
+        reply = b''.join(reply)
+        reply = cobs.decode(reply[:-1]) # remove the last 0x00
         print("reply: ", reply)
 
-        cam_num = int.from_bytes(reply[1], "little") + 1
+        cam_num = int.from_bytes(bytes([reply[1]]), "little") + 1
 
-        if (len(reply) == 9 and reply[0] == b'\xaa'):
+        if (len(reply) == 7 and reply[0] == 170):
             current_time = read_current_time()
             self.log.append(current_time + " :  Camera #" + str(cam_num) + " is turned ON.")
             sleep(1)
@@ -168,11 +172,15 @@ class MainWindow(QtWidgets.QMainWindow):
         while (self.ser.inWaiting()):
             recv_data = self.ser.read(1)
             reply.append(recv_data)
+
+        # decode the reply
+        reply = b''.join(reply)
+        reply = cobs.decode(reply[:-1])  # remove the last 0x00
         print("reply: ", reply)
 
-        cam_num = int.from_bytes(reply[1], "little") + 1
+        cam_num = int.from_bytes(bytes([reply[1]]), "little") + 1
 
-        if (len(reply) == 9 and reply[0] == b'\xaa'):
+        if (len(reply) == 7 and reply[0] == 170):
             current_time = read_current_time()
             self.log.append(current_time + " :  Camera #" + str(cam_num) + " is turned OFF.")
 
@@ -192,21 +200,24 @@ class MainWindow(QtWidgets.QMainWindow):
                 print("No response from the HexSense!")
                 break
 
-        reply = []
         reply_list = []
         while (self.ser.inWaiting()):
             recv_data = self.ser.read(1)
             # print(recv_data.hex(), end='', flush=True)
             reply_list.append(recv_data)
-            reply.append(recv_data[0])
 
-        self.image_size = reply[1] + (reply[2] << 8) + (reply[3] << 16) + (reply[4] << 24)
+        # decode the reply
+        reply_list = b''.join(reply_list)
+        reply_list = cobs.decode(reply_list[:-1])  # remove the last 0x00
+        print("reply: ", reply_list)
+
+        self.image_size = int.from_bytes(bytes([reply_list[3], reply_list[4], reply_list[5], reply_list[6]]), "little")
         cam_num = self.cmd[1] + 1
         self.image_bar.setMaximum(self.image_size)
 
-        if (len(reply) == 9 and reply[0] == 170):
+        if (len(reply_list) == 7 and reply_list[0] == 170):
             current_time = read_current_time()
-            self.log.append(current_time + " :  Image size from #" + str(cam_num) + " - " + str(self.image_size) + " bytes")
+            self.log.append(current_time + " :  Image size from #" + str(cam_num) + " : " + str(self.image_size) + " bytes")
 
     def parse_image(self, image_data):
         with open("output_image.jpg", "wb") as image_file:
