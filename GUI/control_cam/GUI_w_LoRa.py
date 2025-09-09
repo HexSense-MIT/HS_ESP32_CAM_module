@@ -123,7 +123,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cmd[2] = 0x01
         cmd_byte = bytearray(self.cmd)
         # print("cmd sent: ", cmd_byte)
-        encoded_cmd = cobs.encode(cmd_byte)
+        encoded_cmd = cobs.encode(cmd_byte) + b'\x00'
         self.ser.write(encoded_cmd)
 
         i = 0
@@ -153,7 +153,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cmd[2] = 0x02
         cmd_byte = bytearray(self.cmd)
         # print("cmd sent: ", cmd_byte)
-        encoded_cmd = cobs.encode(cmd_byte)
+        encoded_cmd = cobs.encode(cmd_byte) + b'\x00'
         self.ser.write(encoded_cmd)
 
         i = 0
@@ -181,7 +181,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cmd[2] = 0x03
         cmd_byte = bytearray(self.cmd)
         # print("cmd sent: ", cmd_byte)
-        encoded_cmd = cobs.encode(cmd_byte)
+        encoded_cmd = cobs.encode(cmd_byte) + b'\x00'
         self.ser.write(encoded_cmd)
 
         i = 0
@@ -217,7 +217,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cmd[2] = 0x04
         cmd_byte = bytearray(self.cmd)
         # print("cmd sent: ", cmd_byte)
-        encoded_cmd = cobs.encode(cmd_byte)
+        encoded_cmd = cobs.encode(cmd_byte) + b'\x00'
         self.ser.write(encoded_cmd)
 
         image_data = bytearray() # to store the image data
@@ -251,6 +251,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if (self.ser.inWaiting()):
             current_time = read_current_time()
             recv_data = self.ser.read(recv_data_cnt)
+            print("recv_data: ", recv_data)
 
             rtd_1_temp_i = recv_data[0:4]
             rtd_1_temp_d = int.from_bytes(rtd_1_temp_i, "little")

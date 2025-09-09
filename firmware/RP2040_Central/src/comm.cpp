@@ -17,8 +17,11 @@ int update_comm(CommandSource source) {
       recv_cmd[i++] = Serial.read();
     }
   } else {
-    while (LoRa.available()) {
-      recv_ack[i++] = LoRa.read();
+    int packetSize = LoRa.parsePacket();
+    if (packetSize) {
+      while (LoRa.available()) {
+        recv_ack[i++] = LoRa.read();
+      }
     }
   }
 
