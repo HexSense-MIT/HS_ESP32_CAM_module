@@ -219,9 +219,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
         i = 0
         while (not self.ser.inWaiting()):
-            sleep(0.1)
+            sleep(1)
             i = i + 1
-            if (i > 20):
+            if (i > 60):
                 print("No response from the HexSense!")
                 break
 

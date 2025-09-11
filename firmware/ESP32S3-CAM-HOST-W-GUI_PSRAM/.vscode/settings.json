@@ -1,0 +1,15 @@
+{
+    "nrf5-vscode.seggerEmbeddedStudioPath": "/Applications/SEGGER/SEGGER Embedded Studio 8.24",
+    "nrf5-vscode.jLinkPath": "/Applications/SEGGER/JLink_V752d",
+    "files.associations": {
+        "array": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "cstddef": "cpp"
+    }
+}
