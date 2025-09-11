@@ -41,13 +41,24 @@ size_t pack_error(uint8_t error_code) {
   return encoded_len;
 }
 
-size_t pack_data(uint8_t* data, uint64_t len, uint8_t cam_num, uint8_t seq_num) {
+size_t pack_data_cobs(uint8_t* data, uint64_t len, uint8_t cam_num, uint8_t seq_num) {
   reply_data[1] = cam_num;
   reply_data[2] = seq_num;
   memcpy(reply_data + 3, data, len);
 
-  size_t encoded_len = cobs_encode(reply_ack, len + 3, reply_ack_encoded);
-  reply_ack_encoded[encoded_len++] = 0x00;
+  size_t encoded_len = cobs_encode(reply_data, len + 3, reply_data_encoded);
+  reply_data_encoded[encoded_len++] = 0x00;
+
+  return encoded_len;
+}
+
+size_t pack_data_raw(uint8_t* data, uint64_t len, uint8_t cam_num, uint8_t seq_num) {
+  reply_data[1] = cam_num;
+  reply_data[2] = seq_num;
+  memcpy(reply_data + 3, data, len);
+
+  size_t encoded_len = len + 3;
+  memcpy(reply_data_encoded, reply_data, encoded_len);
 
   return encoded_len;
 }
@@ -160,12 +171,16 @@ void handle_cmd(void) {
 
       recv_data_i = 0;
 
+      // Serial.printf("data_len = %d\n", data_len);
+
+      // Grab all image data from the camera module and store it in img_buffer
       while (recv_data_i < data_len) {
         if (Serial1.available()) {
           img_buffer[recv_data_i++] = Serial1.read();
         }
       }
 
+      // Now send the image data in chunks through LoRa
       uint8_t seq_num           = 0;
       size_t bytes_left         = data_len;
       size_t chunk_size         = 100;
@@ -175,12 +190,14 @@ void handle_cmd(void) {
 
       while (bytes_left > 0) {
         current_chunk_size = (bytes_left < chunk_size) ? bytes_left : chunk_size;
-        encoded_len = pack_data(img_buffer + offset, current_chunk_size, cam_num, seq_num);
+        // Serial.printf("Sending chunk %d of size %d bytes ", seq_num, current_chunk_size);
+        encoded_len = pack_data_raw(img_buffer + offset, current_chunk_size, cam_num, seq_num);
+        // Serial.printf("encoded_len = %d\n", encoded_len);
         send_reply(reply_data_encoded, encoded_len); // Send data reply
         offset += current_chunk_size;
         bytes_left -= current_chunk_size;
         seq_num++;
-        delay(20); // Small delay to ensure the receiver can process the packets
+        delay(2); // Small delay to ensure the receiver can process the packets
       }
 
       data_len = 0; // Reset data length after sending all data

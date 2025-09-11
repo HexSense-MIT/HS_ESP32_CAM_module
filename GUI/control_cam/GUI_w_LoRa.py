@@ -11,6 +11,7 @@ import serial
 import sys
 import os
 import time
+import math
 from time import sleep
 from colorama import Fore, Back, Style
 import csv
@@ -47,7 +48,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cmd = [0xAA, 0x00, 0x00, 0x00, 0x00]
 
         # Ref: https://stackoverflow.com/questions/59898215/break-an-infinit-loop-when-button-is-pressed
-        self.timer = QtCore.QTimer(self, interval=5, timeout=self.read_port)
+        # self.timer = QtCore.QTimer(self, interval=5, timeout=self.read_port)
         self.ser=serial.Serial()
 
         self.clear_btn.clicked.connect(self.clear_plot)
@@ -142,7 +143,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # decode the reply
         reply = b''.join(reply)
         reply = cobs.decode(reply[:-1]) # remove the last 0x00
-        print("reply: ", reply)
+        # print("reply: ", reply)
 
         cam_num = int.from_bytes(bytes([reply[1]]), "little") + 1
 
@@ -176,7 +177,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # decode the reply
         reply = b''.join(reply)
         reply = cobs.decode(reply[:-1])  # remove the last 0x00
-        print("reply: ", reply)
+        # print("reply: ", reply)
 
         cam_num = int.from_bytes(bytes([reply[1]]), "little") + 1
 
@@ -209,7 +210,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # decode the reply
         reply_list = b''.join(reply_list)
         reply_list = cobs.decode(reply_list[:-1])  # remove the last 0x00
-        print("reply: ", reply_list)
+        # print("reply: ", reply_list)
 
         self.image_size = int.from_bytes(bytes([reply_list[3], reply_list[4], reply_list[5], reply_list[6]]), "little")
         cam_num = self.cmd[1] + 1
@@ -227,115 +228,43 @@ class MainWindow(QtWidgets.QMainWindow):
         self.get_cam_num()
         self.cmd[2] = 0x04
         cmd_byte = bytearray(self.cmd)
-        # print("cmd sent: ", cmd_byte)
         encoded_cmd = cobs.encode(cmd_byte) + b'\x00'
         self.ser.write(encoded_cmd)
 
-        image_data = bytearray() # to store the image data
-
         i = 0
-        while (not self.ser.inWaiting()):
-            sleep(0.1)
-            i = i + 1
-            if (i > 20):
+        while not self.ser.inWaiting():
+            sleep(1)
+            print(".", end='', flush=True)
+            i += 1
+            if i > 60:  # wait for 60 seconds
                 print("No response from the HexSense!")
                 break
 
-        byte_i = 0
-        while (byte_i < self.image_size):
-            if (self.ser.inWaiting()):
-                recv_data = self.ser.read(1)
-                # print(recv_data.hex(), end='', flush=True)
-                image_data.append(recv_data[0])
-                byte_i += 1
-                print(f'\rProgress: {byte_i/self.image_size*100:.1f}%', end='', flush=True)
-                # print(byte_i, self.image_size)
-                # self.image_bar.setValue(byte_i)
+        image_data = bytearray()  # to store the image data
+
+        with open("raw_image_data.bin", "wb") as image_file:  # Open file to write raw data
+            byte_i = 0
+            total_byte_cnt = math.floor(self.image_size / 100) * 103 + self.image_size % 100 + 3
+            # total_byte_cnt = math.floor(self.image_size/100)*105 + self.image_size%100 + 5
+            print("Expecting to receive", total_byte_cnt, "bytes of data...")
+            while byte_i < total_byte_cnt:
+                if self.ser.inWaiting():
+                    recv_data = self.ser.read(1)
+                    image_data.append(recv_data[0])
+                    byte_i += 1
+                    print(f'\rProgress: {byte_i / total_byte_cnt * 100:.2f}%', end='', flush=True)
+
+            image_file.write(image_data)  # Write raw data to file
+
+        # flush the serial buffer
+        while self.ser.inWaiting():
+            self.ser.read(1)
+            print(">")
 
         cam_num = self.cmd[1] + 1
         current_time = read_current_time()
-        self.log.append(current_time + " :  received image from Camera #" + str(cam_num))
-        self.parse_image(image_data)
-        self.log.append(current_time + " :  write image to output_image.jpg")
-
-    def read_port(self):
-        if (self.ser.inWaiting()):
-            current_time = read_current_time()
-            recv_data = self.ser.read(recv_data_cnt)
-            print("recv_data: ", recv_data)
-
-            rtd_1_temp_i = recv_data[0:4]
-            rtd_1_temp_d = int.from_bytes(rtd_1_temp_i, "little")
-
-            rtd_2_temp_i = recv_data[4:8]
-            rtd_2_temp_d = int.from_bytes(rtd_2_temp_i, "little")
-
-            rtd_3_temp_i = recv_data[8:12]
-            rtd_3_temp_d = int.from_bytes(rtd_3_temp_i, "little")
-
-            rtd_4_temp_i = recv_data[12:16]
-            rtd_4_temp_d = int.from_bytes(rtd_4_temp_i, "little")
-
-            # print(rtd_1_temp_d, rtd_2_temp_d, rtd_3_temp_d, rtd_4_temp_d)
-            # show only two digits
-            rtd_1_temp_d = round(rtd_1_temp_d, 2)
-            rtd_2_temp_d = round(rtd_2_temp_d, 2)
-            rtd_3_temp_d = round(rtd_3_temp_d, 2)
-            rtd_4_temp_d = round(rtd_4_temp_d, 2)
-
-            self.log.append(current_time + " -> RTD1: " + str(rtd_1_temp_d) + " | RTD2: " + str(rtd_2_temp_d) +
-                        " | RTD3: " + str(rtd_3_temp_d) + " | RTD4: " + str(rtd_4_temp_d))
-
-            self.RTD_1_temp.pop(0)
-            self.RTD_1_temp.append(rtd_1_temp_d)
-
-            self.RTD_2_temp.pop(0)
-            self.RTD_2_temp.append(rtd_2_temp_d)
-
-            self.RTD_3_temp.pop(0)
-            self.RTD_3_temp.append(rtd_3_temp_d)
-
-            self.RTD_4_temp.pop(0)
-            self.RTD_4_temp.append(rtd_4_temp_d)
-
-            self.rtd1_plot.clear()
-            self.rtd2_plot.clear()
-            self.rtd3_plot.clear()
-            self.rtd4_plot.clear()
-
-            self.rtd1_plot.plot(self.time_index, self.RTD_1_temp, pen=pg.mkPen('b', width=3))
-            self.rtd1_plot.plot(self.time_index, self.RTD_2_temp, pen=pg.mkPen('r', width=3))
-            self.rtd1_plot.plot(self.time_index, self.RTD_3_temp, pen=pg.mkPen('g', width=3))
-            self.rtd1_plot.plot(self.time_index, self.RTD_4_temp, pen=pg.mkPen('k', width=3))
-            # self.rtd2_plot.plot(self.time_index, self.RTD_2_temp, pen=pg.mkPen('r', width=3))
-            # self.rtd3_plot.plot(self.time_index, self.RTD_3_temp, pen=pg.mkPen('k', width=3))
-            # self.rtd4_plot.plot(self.time_index, self.RTD_4_temp, pen=pg.mkPen('k', width=3))
-
-            if (self.rec_mode == 0):
-                if self.recording == 1:
-                    self.file.write(recv_data)
-                    self.waveform_color = 'r'
-
-                if self.recording == 0:
-                    self.file.close()
-                    self.waveform_color = 'b'
-
-            if (self.rec_mode == 1):
-                if self.recording == 1:
-                    self.file.write(recv_data)
-                    self.recording_cnt += 1
-                    self.waveform_color = 'r'
-
-                    self.image_bar.setValue(self.recording_cnt)
-
-                if self.recording_cnt == self.REC_DATA_LEN:
-                    self.recording = 0
-                    self.log.append(current_time + " -------> Stop automatic recording data. <-------")
-                    self.recording_cnt = 0
-
-                if self.recording == 0:
-                    self.file.close()
-                    self.waveform_color = 'b'
+        self.log.append(current_time + " :  received raw image data from Camera #" + str(cam_num))
+        self.log.append(current_time + " :  raw data written to raw_image_data.bin")
 
     def clear_plot(self):
         self.log.clear()
