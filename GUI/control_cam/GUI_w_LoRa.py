@@ -27,6 +27,7 @@ import subprocess
 from cobs import cobs
 
 recv_data_cnt = 16
+chunk_size    = 20
 
 def read_current_time():
     now = datetime.datetime.now(datetime.timezone.utc)
@@ -221,7 +222,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.log.append(current_time + " :  Image size from #" + str(cam_num) + " : " + str(self.image_size) + " bytes")
 
     def parse_image(self, image_data):
-        with open("output_image.jpg", "wb") as image_file:
+        with open("output_image_LoRa.jpg", "wb") as image_file:
             image_file.write(image_data)
 
     def grab_data(self):
@@ -240,11 +241,12 @@ class MainWindow(QtWidgets.QMainWindow):
                 print("No response from the HexSense!")
                 break
 
+        print("\n", flush=True)
         image_data = bytearray()  # to store the image data
 
         with open("raw_image_data.bin", "wb") as image_file:  # Open file to write raw data
             byte_i = 0
-            total_byte_cnt = math.floor(self.image_size / 100) * 103 + self.image_size % 100 + 3
+            total_byte_cnt = math.floor(self.image_size / chunk_size) * (chunk_size + 3) + self.image_size % chunk_size + 3
             # total_byte_cnt = math.floor(self.image_size/100)*105 + self.image_size%100 + 5
             print("Expecting to receive", total_byte_cnt, "bytes of data...")
             while byte_i < total_byte_cnt:

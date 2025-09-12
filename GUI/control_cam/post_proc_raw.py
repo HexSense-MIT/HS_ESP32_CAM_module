@@ -2,6 +2,8 @@ from cobs import cobs
 import os
 import math
 
+chunk_size = 20
+
 def parse_image(image_data):
     print("length of image data: ", len(image_data))
     # print(image_data)
@@ -13,12 +15,12 @@ def process_raw_image_data(file_path, output_file):
         with open(file_path, 'rb') as f:
             raw_data = f.read()
 
-        frames_cnt = math.floor(len(raw_data)/103) + 1
+        frames_cnt = math.floor(len(raw_data)/(chunk_size + 3)) + 1
         raw_frames = []
 
         for i in range(frames_cnt):
-            start = i * 103
-            end = start + 103
+            start = i * (chunk_size + 3)
+            end = start + (chunk_size + 3)
             raw_frames.append(raw_data[start:end])  # Append each frame to the list
 
         image_data = bytearray()
@@ -28,11 +30,14 @@ def process_raw_image_data(file_path, output_file):
                 head = raw_frame[0]
                 camera_number = raw_frame[1]
                 sequence_number = raw_frame[2]
-                print(f"Head: {head}, Camera: {camera_number}, Sequence: {sequence_number}, Frame Length: {len(raw_frame)}")
+                # print(f"Head: {head}, Camera: {camera_number}, Sequence: {sequence_number}, Frame Length: {len(raw_frame)}")
                 frame_data = raw_frame[3:]  # Assuming the rest is image data
                 image_data.extend(frame_data)
             except Exception as e:
                 print(f"Error decoding frame: {e}", " | len(raw_frame): ", len(raw_frame), "raw_frame: ", raw_frame)
+
+        for byte in image_data:
+            print(f"{byte:02X}", end='')
 
         parse_image(image_data)
 
