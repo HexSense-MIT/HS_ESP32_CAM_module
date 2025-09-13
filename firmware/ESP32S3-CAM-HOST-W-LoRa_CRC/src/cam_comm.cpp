@@ -12,6 +12,9 @@ uint8_t reply_ack_encoded[15]   = {0x00};
 uint8_t reply_data[120]         = {0xBB};
 uint8_t reply_data_encoded[120] = {0xBB};
 
+uint8_t reply_data_last[120]         = {0xFF};
+uint8_t reply_data_last_encoded[120] = {0xFF};
+
 uint8_t cam_module_ack[10]      = {0};
 uint8_t cam_module_data[150]    = {0};
 
@@ -23,6 +26,15 @@ uint8_t cam_data = 0;
 uint64_t data_len = 0; // Length of the data to be sent
 
 int recv_data_i = 0;
+
+// Variables for sending image data in chunks
+uint8_t  image_frame_seq    = 0;
+size_t   bytes_left         = data_len;
+const size_t chunk_size     = 20;
+size_t   current_chunk_size = 0;
+size_t   encoded_len        = 0;
+size_t   offset             = 0;
+uint8_t checksum            = 0;
 
 size_t pack_ack(uint8_t ack_code) {
   reply_ack[1] = cam_num;
@@ -58,7 +70,34 @@ size_t pack_data_raw(uint8_t* data, uint64_t len, uint8_t cam_num, uint8_t seq_n
   memcpy(reply_data + 3, data, len);
 
   size_t encoded_len = len + 3;
+
+  checksum = 0;
+  for (size_t i = 0; i < encoded_len; i++) {
+    checksum += reply_data[i];
+  }
+  reply_data[encoded_len] = checksum;
+  encoded_len += 1;
+
   memcpy(reply_data_encoded, reply_data, encoded_len);
+
+  return encoded_len;
+}
+
+size_t pack_last_data_raw(uint8_t* data, uint64_t len, uint8_t cam_num, uint8_t seq_num) {
+  reply_data_last[1] = cam_num;
+  reply_data_last[2] = seq_num;
+  memcpy(reply_data_last + 3, data, len);
+
+  size_t encoded_len = len + 3;
+
+  checksum = 0;
+  for (size_t i = 0; i < encoded_len; i++) {
+    checksum += reply_data[i];
+  }
+  reply_data[encoded_len] = checksum;
+  encoded_len += 1;
+
+  memcpy(reply_data_last_encoded, reply_data_last, encoded_len);
 
   return encoded_len;
 }
@@ -125,6 +164,7 @@ void handle_cmd(void) {
         send_reply(reply_ack_encoded, ack_len);      // Send acknowledgment reply
       }
     }
+
     else if (recv_cmd_decoded[2] == TURN_OFF_CAM_CODE) { // turn off the camera
       cam_num = recv_cmd_decoded[1]; // Get the camera number from the command
 
@@ -145,7 +185,8 @@ void handle_cmd(void) {
         return;
       }
     }
-    else if (recv_cmd_decoded[2] == 0x03) { // take a photo
+
+    else if (recv_cmd_decoded[2] == TAKE_PHOTO_CAM_CODE) { // take a photo
       Serial1.write(CAPTURE_CMD);
       Serial1.flush();
 
@@ -158,17 +199,19 @@ void handle_cmd(void) {
       }
       data_len = cam_module_ack[1] | (cam_module_ack[2] << 8) | (cam_module_ack[3] << 16) | (cam_module_ack[4] << 24);
 
-      // Serial.printf("data_len = %d\n", data_len);
-
       reply_ack[1] = cam_num;
       reply_ack[2] = 0x03;
       memcpy(reply_ack + 3, cam_module_ack + 1, 4); // Copy the length of the data to the reply
       size_t encoded_len = cobs_encode(reply_ack, 7, reply_ack_encoded);
       reply_ack_encoded[encoded_len++] = 0x00; // Append the delimiter
 
+      image_frame_seq = 0;
+      offset          = 0;
+
       send_reply(reply_ack_encoded, encoded_len); // Send acknowledgment reply
     }
-    else if (recv_cmd_decoded[2] == 0x04) { // send photo data
+
+    else if (recv_cmd_decoded[2] == GRAB_DATA_CAM_CODE) { // Grab data
       Serial1.write(SEND_CAM_DATA_CMD);
       Serial1.flush();
 
@@ -181,39 +224,40 @@ void handle_cmd(void) {
         }
       }
 
-      // for (size_t i = 0; i < data_len; i++) {
-      //   Serial.printf("%02X", img_buffer[i]);
-      // }
+      bytes_left = data_len;
 
-      // Now send the image data in chunks through LoRa
-      uint8_t seq_num           = 0;
-      size_t bytes_left         = data_len;
-      size_t chunk_size         = 20;
-      size_t current_chunk_size = 0;
-      size_t encoded_len        = 0;
-      size_t offset             = 0;
-
-      while (bytes_left > 0) {
-        current_chunk_size = (bytes_left < chunk_size) ? bytes_left : chunk_size;
-        // Serial.printf("Sending chunk %d of size %d bytes ", seq_num, current_chunk_size);
-        // for (size_t i = offset; i < offset + current_chunk_size; i++) {
-        //   Serial.printf("%02X", img_buffer[i]);
-        // }
-        encoded_len = pack_data_raw(img_buffer + offset, current_chunk_size, cam_num, seq_num);
-        // Serial.printf("encoded_len = %d\n", encoded_len);
-        send_reply(reply_data_encoded, encoded_len); // Send data reply
-        offset += current_chunk_size;
-        bytes_left -= current_chunk_size;
-        seq_num++;
-        delay(1); // Small delay to ensure the receiver can process the packets
-      }
-
-      data_len = 0; // Reset data length after sending all data
+      size_t ack_len = pack_ack(GRAB_DATA_CAM_CODE); // Pack acknowledgment for successful operation
+      send_reply(reply_ack_encoded, ack_len);        // Send acknowledgment reply
     }
+
+    else if (recv_cmd_decoded[2] == NEXT_PACKET_CAM_CODE) { // Send next packet of data
+      if (bytes_left > 0) {
+        if (bytes_left < chunk_size) {
+          current_chunk_size = bytes_left;
+          encoded_len        = pack_last_data_raw(img_buffer + offset, current_chunk_size, cam_num, image_frame_seq);
+          send_reply(reply_data_last_encoded, encoded_len); // Send data reply
+        } else {
+          current_chunk_size = chunk_size;
+          encoded_len        = pack_data_raw(img_buffer + offset, current_chunk_size, cam_num, image_frame_seq);
+          send_reply(reply_data_encoded, encoded_len); // Send data reply
+        }
+        bytes_left -= current_chunk_size;
+        image_frame_seq++;
+        offset += current_chunk_size;
+      }
+    }
+
+    else if (recv_cmd_decoded[2] == RETRANSMIT_CAM_CODE) { // Retransmit last packet
+      if (bytes_left == 0) { // Last packet
+        send_reply(reply_data_last_encoded, encoded_len);  // Send data reply
+      } else {               // Not last packet
+        send_reply(reply_data_encoded, encoded_len);       // Send data reply
+      }
+    }
+
     else {
-      // Serial.println("Invalid command received.");
-      size_t ack_len = pack_error(WRONG_CMD_CODE); // Pack error for invalid camera number
-      send_reply(reply_ack_encoded, ack_len);      // Send acknowledgment reply
+      size_t nck_len = pack_error(WRONG_CMD_CODE); // Pack error for invalid camera number
+      send_reply(reply_ack_encoded, nck_len);      // Send acknowledgment reply
     }
   }
   else { // command is not correct length

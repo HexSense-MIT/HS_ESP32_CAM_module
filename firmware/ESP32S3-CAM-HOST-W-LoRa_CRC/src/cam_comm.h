@@ -11,8 +11,12 @@
 #define CAPTURE_CMD       0x01
 #define SEND_CAM_DATA_CMD 0x02
 
-#define TURN_ON_CAM_CODE  0x01
-#define TURN_OFF_CAM_CODE 0x02
+#define TURN_ON_CAM_CODE     0x01
+#define TURN_OFF_CAM_CODE    0x02
+#define TAKE_PHOTO_CAM_CODE  0x03
+#define GRAB_DATA_CAM_CODE   0x04
+#define NEXT_PACKET_CAM_CODE 0x05
+#define RETRANSMIT_CAM_CODE  0x06
 
 #define IMG_SIZE 1024 * 500  // 100 KB buffer for image data
 
@@ -23,8 +27,9 @@ extern void handle_cmd(void);
 
 size_t pack_ack(uint8_t ack_code);
 size_t pack_error(uint8_t error_code);
-size_t pack_data_cobs(uint8_t* data, uint64_t len);
-size_t pack_data_raw(uint8_t* data, uint64_t len);
+size_t pack_data_cobs(uint8_t* data, uint64_t len, uint8_t cam_num, uint8_t seq_num);
+size_t pack_data_raw(uint8_t* data, uint64_t len, uint8_t cam_num, uint8_t seq_num);
+size_t pack_last_data_raw(uint8_t* data, uint64_t len, uint8_t cam_num, uint8_t seq_num);
 
 void send_reply(uint8_t* data, size_t len);
 
