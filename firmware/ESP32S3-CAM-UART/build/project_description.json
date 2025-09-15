@@ -1,7 +1,7 @@
 {
     "version":            "1.2",
     "project_name":       "ESP32S3-CAM-UART",
-    "project_version":    "167cdcf-dirty",
+    "project_version":    "48435eb-dirty",
     "project_path":       "/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/ESP32S3-CAM-UART",
     "idf_path":           "/Users/liufangzheng/esp/esp-idf",
     "build_dir":          "/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/ESP32S3-CAM-UART/build",

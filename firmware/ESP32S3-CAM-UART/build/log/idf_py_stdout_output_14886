@@ -1,0 +1,60 @@
+[1/10] Performing build step for 'bootloader'
+[1/1] cd /Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/ESP32S3-CAM-UART/build/bootloader/esp-idf/esptool_py && /Users/liufangzheng/.espressif/python_env/idf5.4_py3.12_env/bin/python /Users/liufangzheng/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x0 /Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/ESP32S3-CAM-UART/build/bootloader/bootloader.bin
+Bootloader binary size 0x5220 bytes. 0x2de0 bytes (36%) free.
+[2/8] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/ESP32S3-CAM-UART.c.obj
+[3/8] Linking C static library esp-idf/main/libmain.a
+[4/8] Generating ld/sections.ld
+[5/8] Linking CXX executable ESP32S3-CAM-UART.elf
+[6/8] Generating binary image from built executable
+esptool.py v4.8.1
+Creating esp32s3 image...
+Merged 2 ELF sections
+Successfully created esp32s3 image.
+Generated /Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/ESP32S3-CAM-UART/build/ESP32S3-CAM-UART.bin
+[7/8] cd /Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/ESP32S3-CAM-UART/build/esp-idf/esptool_py && /Users/liufangzheng/.espressif/python_env/idf5.4_py3.12_env/bin/python /Users/liufangzheng/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/ESP32S3-CAM-UART/build/partition_table/partition-table.bin /Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/ESP32S3-CAM-UART/build/ESP32S3-CAM-UART.bin
+ESP32S3-CAM-UART.bin binary size 0x50370 bytes. Smallest app partition is 0x100000 bytes. 0xafc90 bytes (69%) free.
+[7/8] cd /Users/liufangzheng/esp/esp-idf/components/esptool_py && /opt/local/bin/cmake -D IDF_PATH=/Users/liufangzheng/esp/esp-idf -D "SERIAL_TOOL=/Users/liufangzheng/.espressif/python_env/idf5.4_py3.12_env/bin/python;;/Users/liufangzheng/esp/esp-idf/components/esptool_py/esptool/esptool.py;--chip;esp32s3" -D "SERIAL_TOOL_ARGS=--before=default_reset;--after=hard_reset;write_flash;@flash_args" -D WORKING_DIRECTORY=/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/ESP32S3-CAM-UART/build -P /Users/liufangzheng/esp/esp-idf/components/esptool_py/run_serial_tool.cmake
+esptool.py --chip esp32s3 -p /dev/tty.usbmodem1412201 -b 460800 --before=default_reset --after=hard_reset write_flash --flash_mode dio --flash_freq 80m --flash_size 4MB 0x0 bootloader/bootloader.bin 0x10000 ESP32S3-CAM-UART.bin 0x8000 partition_table/partition-table.bin
+esptool.py v4.8.1
+Serial port /dev/tty.usbmodem1412201
+Connecting...
+Chip is ESP32-S3 (QFN56) (revision v0.2)
+Features: WiFi, BLE, Embedded PSRAM 8MB (AP_3v3)
+Crystal is 40MHz
+MAC: 48:ca:43:2e:4a:fc
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Flash will be erased from 0x00000000 to 0x00005fff...
+Flash will be erased from 0x00010000 to 0x00060fff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+SHA digest in image updated
+Compressed 21024 bytes to 13383...
+Writing at 0x00000000... (100 %)
+Wrote 21024 bytes (13383 compressed) at 0x00000000 in 0.4 seconds (effective 439.0 kbit/s)...
+Hash of data verified.
+Compressed 328560 bytes to 181018...
+Writing at 0x00010000... (8 %)
+Writing at 0x0001b77b... (16 %)
+Writing at 0x00022ab5... (25 %)
+Writing at 0x00028b73... (33 %)
+Writing at 0x0002ecd5... (41 %)
+Writing at 0x00036bec... (50 %)
+Writing at 0x0003cd9b... (58 %)
+Writing at 0x00044858... (66 %)
+Writing at 0x0004b87a... (75 %)
+Writing at 0x0005335e... (83 %)
+Writing at 0x0005945e... (91 %)
+Writing at 0x0005ff8d... (100 %)
+Wrote 328560 bytes (181018 compressed) at 0x00010000 in 2.6 seconds (effective 1009.1 kbit/s)...
+Hash of data verified.
+Compressed 3072 bytes to 103...
+Writing at 0x00008000... (100 %)
+Wrote 3072 bytes (103 compressed) at 0x00008000 in 0.0 seconds (effective 522.8 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...

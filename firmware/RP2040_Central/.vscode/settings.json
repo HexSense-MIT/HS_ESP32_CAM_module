@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "istream": "cpp",
+        "ostream": "cpp",
+        "*.inc": "cpp",
+        "algorithm": "cpp",
+        "mutex": "cpp",
+        "stop_token": "cpp"
+    },
+    "nrf5-vscode.seggerEmbeddedStudioPath": "/Applications/SEGGER/SEGGER Embedded Studio 8.24",
+    "nrf5-vscode.jLinkPath": "/Applications/SEGGER/JLink_V752d"
+}
