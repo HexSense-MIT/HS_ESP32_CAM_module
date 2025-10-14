@@ -4,7 +4,7 @@ import glob
 import os
 
 # Configuration
-CHECKERBOARD = (6, 9)  # Number of inner corners (columns, rows) - adjust based on your chessboard
+CHECKERBOARD = (11, 17)  # Number of inner corners (columns, rows) - adjust based on your chessboard
 SQUARE_SIZE = 2.5  # Size of a square in cm
 IMAGE_PATH = "./*.jpg"  # Path to calibration images
 OUTPUT_FILE = "fisheye_calibration_data.npz"
