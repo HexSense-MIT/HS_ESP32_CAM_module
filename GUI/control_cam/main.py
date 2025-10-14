@@ -128,7 +128,7 @@ class MainWindow(QtWidgets.QMainWindow):
         while(not self.ser.inWaiting()):
             sleep(0.1)
             i = i + 1
-            if (i > 20):
+            if (i > 50):
                 print("No response from the HexSense!")
                 break
 
@@ -157,7 +157,7 @@ class MainWindow(QtWidgets.QMainWindow):
         while (not self.ser.inWaiting()):
             sleep(0.1)
             i = i + 1
-            if (i > 20):
+            if (i > 50):
                 print("No response from the HexSense!")
                 break
 
@@ -184,7 +184,7 @@ class MainWindow(QtWidgets.QMainWindow):
         while (not self.ser.inWaiting()):
             sleep(0.1)
             i = i + 1
-            if (i > 20):
+            if (i > 50):
                 print("No response from the HexSense!")
                 break
 
