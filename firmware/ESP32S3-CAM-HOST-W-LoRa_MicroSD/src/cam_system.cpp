@@ -1,5 +1,8 @@
 #include "cam_system.h"
 
+// Dedicated SPI bus for SD card (SPI1 on ESP32-S3)
+static SPIClass sdSPI(FSPI);
+
 void SD_init(void) {
   // Enable internal pull-ups on SPI pins
   pinMode(SD_SCK, INPUT_PULLUP);
@@ -7,9 +10,9 @@ void SD_init(void) {
   pinMode(SD_MOSI, INPUT_PULLUP);
   pinMode(SD_CS, INPUT_PULLUP);
 
-  SPI.begin(SD_SCK, SD_MISO, SD_MOSI, SD_CS);
+  sdSPI.begin(SD_SCK, SD_MISO, SD_MOSI, SD_CS);
 
-  if (!SD.begin(SD_CS)) {
+  if (!SD.begin(SD_CS, sdSPI)) {
     while (1);
   }
 }

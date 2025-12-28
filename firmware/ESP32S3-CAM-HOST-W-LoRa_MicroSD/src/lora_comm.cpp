@@ -1,5 +1,8 @@
 #include "lora_comm.h"
 
+// Dedicated SPI bus for LoRa (SPI2 on ESP32-S3)
+static SPIClass loraSPI(HSPI);
+
 static void lora_pin_init(void) {
   pinMode(LORA_RST,    OUTPUT);
   pinMode(LORA_CS_PIN, OUTPUT);
@@ -17,8 +20,9 @@ void lora_setup (void) {
   lora_pin_init();
   lora_rst();
 
-  SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_SS);
+  loraSPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_SS);
 
+  LoRa.setSPI(loraSPI);
   LoRa.setPins(LORA_CS_PIN, LORA_RST, LORA_IRQ);
 
   while (!LoRa.begin(915E6)) {
@@ -40,7 +44,6 @@ size_t lora_receive_data(uint8_t* buf, size_t buf_size) {
 
   return received_len;
 }
-
 
 
 
