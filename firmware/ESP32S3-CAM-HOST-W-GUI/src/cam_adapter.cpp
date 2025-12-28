@@ -3,7 +3,7 @@
 SFE_PCA95XX io; // Global instance of the PCA95XX I2C expander
 
 void camadapter_init(void) {
-  Wire.begin(39, 40);
+  Wire.begin(CAM_SDA_PIN, CAM_SCL_PIN); // Initialize I2C communication
 
   // Initialize the PCA95XX I2C expander
   if (io.begin(PCA9554_ADDRESS_21) == false) {
