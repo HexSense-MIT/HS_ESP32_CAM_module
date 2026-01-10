@@ -1,7 +1,7 @@
 {
     "version":            "1.2",
     "project_name":       "ESP32S3-CAM-UART",
-    "project_version":    "48435eb-dirty",
+    "project_version":    "02b3c2f-dirty",
     "project_path":       "/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/ESP32S3-CAM-UART",
     "idf_path":           "/Users/liufangzheng/esp/esp-idf",
     "build_dir":          "/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/ESP32S3-CAM-UART/build",
@@ -903,14 +903,14 @@
             "target": "___idf_esp_psram",
             "prefix": "idf",
             "dir": "/Users/liufangzheng/esp/esp-idf/components/esp_psram",
-            "type": "LIBRARY",
+            "type": "CONFIG_ONLY",
             "lib": "__idf_esp_psram",
             "reqs": [],
             "priv_reqs": [ "heap", "spi_flash", "esp_mm" ],
             "managed_reqs": [],
             "managed_priv_reqs": [],
-            "file": "/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/ESP32S3-CAM-UART/build/esp-idf/esp_psram/libesp_psram.a",
-            "sources": [ "/Users/liufangzheng/esp/esp-idf/components/esp_psram/esp_psram.c", "/Users/liufangzheng/esp/esp-idf/components/esp_psram/mmu_psram_flash.c", "/Users/liufangzheng/esp/esp-idf/components/esp_psram/esp32s3/esp_psram_impl_octal.c" ],
+            "file": "",
+            "sources": [],
             "include_dirs": [ "include" ]
         },
         "esp_ringbuf": {
@@ -1255,7 +1255,7 @@
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "/Users/liufangzheng/Documents/Lab/github/HexSense_MIT/HS_ESP32_CAM_module/firmware/ESP32S3-CAM-UART/build/esp-idf/newlib/libnewlib.a",
-            "sources": [ "/Users/liufangzheng/esp/esp-idf/components/newlib/abort.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/assert.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/heap.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/flockfile.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/locks.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/poll.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/pthread.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/random.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/getentropy.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/reent_init.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/newlib_init.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/syscalls.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/termios.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/stdatomic.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/time.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/sysconf.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/realpath.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/scandir.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/port/xtensa/stdatomic_s32c1i.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/port/esp_time_impl.c" ],
+            "sources": [ "/Users/liufangzheng/esp/esp-idf/components/newlib/abort.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/assert.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/heap.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/flockfile.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/locks.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/poll.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/pthread.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/random.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/getentropy.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/reent_init.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/newlib_init.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/syscalls.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/termios.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/stdatomic.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/time.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/sysconf.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/realpath.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/scandir.c", "/Users/liufangzheng/esp/esp-idf/components/newlib/port/esp_time_impl.c" ],
             "include_dirs": [ "platform_include" ]
         },
         "nvs_flash": {

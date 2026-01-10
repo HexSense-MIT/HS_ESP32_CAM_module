@@ -66,7 +66,7 @@ static camera_config_t camera_config = {
     .pin_xclk       = XCLK_GPIO_NUM,
     .pin_sccb_sda   = SIOD_GPIO_NUM,
     .pin_sccb_scl   = SIOC_GPIO_NUM,
-    
+
     .pin_d0         = Y2_GPIO_NUM,
     .pin_d1         = Y3_GPIO_NUM,
     .pin_d2         = Y4_GPIO_NUM,
